@@ -1,0 +1,23 @@
+services:
+  api:
+    container_name: hey-api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      sh -c "sleep ${MONGO_INIT_WAIT:-5} && yarn db:migration && yarn start"
+    env_file:
+      - ../backend/.env
+    ports:
+      - "${API_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      MONGO_INIT_WAIT: ${MONGO_INIT_WAIT:-5}
+      JWT_SECRET: ${JWT_SECRET:-d4746097097717efcfaae647eae072adaaf49f240491ecd3d2822347be06bdba}
+    networks:
+      - hey_default
+
+networks:
+  hey_default:
+    driver: bridge
