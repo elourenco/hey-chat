@@ -1,4 +1,3 @@
-import Button from '@components/button/Button';
 import { useFormikContext } from 'formik';
 import type React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
@@ -32,10 +31,10 @@ describe('ButtonSubmit', () => {
     });
 
     const renderer = renderButton(<ButtonSubmit title="Continuar" />);
-    const button = renderer.root.findByType(Button);
+    const pressable = renderer.root.findByProps({ accessibilityLabel: 'Continuar' });
 
-    expect(button.props.disabled).toBe(true);
-    expect(button.props.loading).toBe(false);
+    expect(pressable.props.disabled).toBe(true);
+    expect(pressable.props.accessibilityState).toEqual({ disabled: true, busy: false });
   });
 
   it('disables submit while submitting', () => {
@@ -47,10 +46,10 @@ describe('ButtonSubmit', () => {
     });
 
     const renderer = renderButton(<ButtonSubmit title="Salvar" />);
-    const button = renderer.root.findByType(Button);
+    const pressable = renderer.root.findByProps({ accessibilityLabel: 'Salvar' });
 
-    expect(button.props.disabled).toBe(true);
-    expect(button.props.loading).toBe(true);
+    expect(pressable.props.disabled).toBe(true);
+    expect(pressable.props.accessibilityState).toEqual({ disabled: true, busy: true });
   });
 
   it('invokes handleSubmit when enabled', () => {
@@ -63,10 +62,10 @@ describe('ButtonSubmit', () => {
     });
 
     const renderer = renderButton(<ButtonSubmit title="Entrar" />);
-    const button = renderer.root.findByType(Button);
+    const pressable = renderer.root.findByProps({ accessibilityLabel: 'Entrar' });
 
     ReactTestRenderer.act(() => {
-      button.props.onPress();
+      pressable.props.onPress();
     });
 
     expect(handleSubmit).toHaveBeenCalledTimes(1);

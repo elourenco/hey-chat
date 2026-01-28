@@ -5,8 +5,6 @@ import ReactTestRenderer from 'react-test-renderer';
 import { styles } from './styles';
 import TextInput from './TextInput';
 
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
 const renderInput = (jsx: React.ReactElement) => {
   let renderer: ReactTestRenderer.ReactTestRenderer;
   ReactTestRenderer.act(() => {

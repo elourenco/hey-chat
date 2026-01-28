@@ -4,14 +4,6 @@ import { Pressable } from 'react-native';
 import ReactTestRenderer from 'react-test-renderer';
 import MessageComposer from './MessageComposer';
 
-jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
-  Reanimated.default.call = () => {};
-  return Reanimated;
-});
-
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
 const renderComposer = (jsx: React.ReactElement) => {
   let renderer: ReactTestRenderer.ReactTestRenderer;
   ReactTestRenderer.act(() => {
@@ -27,7 +19,7 @@ describe('MessageComposer', () => {
       <MessageComposer value="  " onChangeText={jest.fn()} onSend={onSend} />,
     );
 
-    const pressable = renderer.root.findByType(Pressable);
+    const pressable = renderer.root.findByProps({ accessibilityLabel: 'Enviar mensagem' });
     ReactTestRenderer.act(() => {
       pressable.props.onPress();
     });
@@ -42,7 +34,7 @@ describe('MessageComposer', () => {
       <MessageComposer value="Oi" onChangeText={jest.fn()} onSend={onSend} />,
     );
 
-    const pressable = renderer.root.findByType(Pressable);
+    const pressable = renderer.root.findByProps({ accessibilityLabel: 'Enviar mensagem' });
     ReactTestRenderer.act(() => {
       pressable.props.onPress();
     });
@@ -56,7 +48,7 @@ describe('MessageComposer', () => {
       <MessageComposer value="Oi" onChangeText={jest.fn()} onSend={jest.fn()} isSending />,
     );
 
-    const pressable = renderer.root.findByType(Pressable);
+    const pressable = renderer.root.findByProps({ accessibilityLabel: 'Enviar mensagem' });
     const texts = renderer.root.findAllByType(Text);
     const labels = texts.map((node) => node.props.children);
 

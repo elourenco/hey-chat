@@ -4,14 +4,6 @@ import { StyleSheet } from 'react-native';
 import ReactTestRenderer from 'react-test-renderer';
 import HStack from './HStack';
 
-jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
-  Reanimated.default.call = () => {};
-  return Reanimated;
-});
-
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
 const renderStack = (jsx: React.ReactElement) => {
   let renderer: ReactTestRenderer.ReactTestRenderer;
   ReactTestRenderer.act(() => {
