@@ -1,5 +1,6 @@
-import { Router } from 'express';
-import { AuthController } from './auth.controller';
+import { Router } from "express";
+import passport from "passport";
+import { AuthController } from "./auth.controller";
 
 export const authRoutes = Router();
 
@@ -9,12 +10,12 @@ export const authRoutes = Router();
  *   schemas:
  *     RegisterPayload:
  *       type: object
- *       required: [name, email, password]
+ *       required: [fullname, username, password]
  *       properties:
- *         name:
+ *         fullname:
  *           type: string
  *           example: Ada Lovelace
- *         email:
+ *         username:
  *           type: string
  *           example: ada@hey.chat
  *         password:
@@ -22,9 +23,9 @@ export const authRoutes = Router();
  *           example: secret123
  *     LoginPayload:
  *       type: object
- *       required: [email, password]
+ *       required: [username, password]
  *       properties:
- *         email:
+ *         username:
  *           type: string
  *           example: ada@hey.chat
  *         password:
@@ -54,7 +55,7 @@ export const authRoutes = Router();
  *       201:
  *         description: User created
  */
-authRoutes.post('/register', AuthController.register);
+authRoutes.post("/register", AuthController.register);
 
 /**
  * @openapi
@@ -76,4 +77,8 @@ authRoutes.post('/register', AuthController.register);
  *             schema:
  *               $ref: '#/components/schemas/AuthResponse'
  */
-authRoutes.post('/login', AuthController.login);
+authRoutes.post(
+	"/login",
+	passport.authenticate("local", { session: false }),
+	AuthController.login,
+);

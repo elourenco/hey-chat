@@ -1,5 +1,5 @@
 export type CreateUserPayload = {
-	name: string;
-	email: string;
+	fullname: string;
+	username: string;
 	password: string;
 };

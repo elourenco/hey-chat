@@ -1,19 +1,18 @@
+import { store } from '@app/redux/store';
+import { Loggers } from '@utils/loggers';
 import type { InternalAxiosRequestConfig } from 'axios';
 
 export async function attachIdTokenToConfig(
   config: InternalAxiosRequestConfig,
 ): Promise<InternalAxiosRequestConfig> {
-  const user = getAuth().currentUser;
+  const token = store.getState().authReducer.token;
 
-  if (!user) return config;
+  if (!token) return config;
 
   try {
-    const idToken = '';
-    config.headers.set('Authorization', `Bearer ${idToken}`);
+    config.headers.set('Authorization', `Bearer ${token}`);
   } catch (_err) {
-    if (__DEV__) {
-      console.log('Failed to attach ID token to request headers');
-    }
+    Loggers.error('Failed to attach ID token to request');
   }
 
   return config;

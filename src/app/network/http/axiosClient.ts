@@ -22,8 +22,8 @@ const resolveBaseUrl = (baseUrl?: string) => {
 };
 
 const options: AxiosRequestConfig = {
-  baseURL: resolveBaseUrl(RNConfig.BASE_URL),
-  timeout: __DEV__ ? 3000000 : 90000,
+  baseURL: resolveBaseUrl(RNConfig.baseUrl),
+  timeout: __DEV__ ? 300000 : 15000,
   headers: { ...defaultHeaders },
 };
 

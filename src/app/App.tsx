@@ -1,6 +1,7 @@
 import ErrorBoundary from 'react-native-error-boundary';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
+import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-redux';
 import RootNavigator from './navigation/RootNavigator';
 import { store } from './redux/store';
@@ -11,7 +12,9 @@ const App = () => {
       <ErrorBoundary>
         <Provider store={store}>
           <KeyboardProvider>
-            <RootNavigator />
+            <ToastProvider>
+              <RootNavigator />
+            </ToastProvider>
           </KeyboardProvider>
         </Provider>
       </ErrorBoundary>

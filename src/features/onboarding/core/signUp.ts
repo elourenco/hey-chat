@@ -1,15 +1,31 @@
+import type { IResult } from 'src/types/function';
+import { signUpApi } from '../apis/signUpApi';
+
 interface ISignUpPayload {
   username: string;
   fullname: string;
   password: string;
 }
 
-export const signUp = async (payload: ISignUpPayload) => {
-  // Simulate an API call delay
-  return new Promise<{ error: null | { message: string } }>((resolve) => {
-    setTimeout(() => {
-      // For demonstration, we assume the sign-up is always successful
-      resolve({ error: null });
-    }, 1000);
-  });
+interface ISignUpResult {
+  success: boolean;
+}
+
+export const signUp = async (payload: ISignUpPayload): Promise<IResult<ISignUpResult>> => {
+  try {
+    await signUpApi(payload);
+    return {
+      data: {
+        success: true,
+      },
+    };
+  } catch (error) {
+    return {
+      error: {
+        code: 'SIGN_UP_ERROR',
+        message: `An error occurred during sign up. - ${(error as Error).message}`,
+        originError: error as Error,
+      },
+    };
+  }
 };

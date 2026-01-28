@@ -40,7 +40,7 @@ const SignUpScreen = () => {
                 <NameInput />
                 <UserNameInput />
                 <PasswordInput />
-                <ButtonSubmit title="Continue" />
+                <ButtonSubmit title="Cadastrar" />
               </VStack>
             </Formik>
             <Button title="Cancelar" onPress={handleOnBack} variant="link" />

@@ -6,16 +6,19 @@ import { authRoutes } from "./modules/auth";
 import { messagesRoutes } from "./modules/messages";
 import { usersRoutes } from "./modules/users";
 import { configurePassport } from "./config/passport";
+import { loadEnv } from "./config";
 import swaggerUi from "swagger-ui-express";
 import { openapiSpecification } from "./docs/openapi";
 import { errorMiddleware } from "./shared/middleware/error.middleware";
 import { initSockets } from "./sockets";
+import { requireAuth } from "./shared/middleware/auth.middleware";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+loadEnv();
 configurePassport();
 
 app.use(passport.initialize() as RequestHandler);
@@ -36,7 +39,7 @@ app.get("/openapi.json", (_req, res) => res.json(openapiSpecification));
 app.use("/docs", ...swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
-app.use("/messages", messagesRoutes);
+app.use("/messages", requireAuth, messagesRoutes);
 
 app.use(errorMiddleware);
 

@@ -5,6 +5,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Loggers } from '@utils/loggers';
 import type { FormikProps, FormikValues } from 'formik';
 import { useCallback, useRef } from 'react';
+import { useToast } from 'react-native-toast-notifications';
 
 const INITIAL_VALUES = {
   username: '',
@@ -12,20 +13,24 @@ const INITIAL_VALUES = {
 };
 
 export const useSignInScreen = () => {
+  const toast = useToast();
   const { navigate } = useNavigation<NativeStackNavigationProp<IOnboardingNativeStackNavigator>>();
   const formikRef = useRef<FormikProps<typeof INITIAL_VALUES>>(null);
 
-  const onSubmitHandler = useCallback(async (formValues: FormikValues) => {
-    try {
+  const onSubmitHandler = useCallback(
+    async (formValues: FormikValues) => {
       const { username, password } = formValues;
-      const { error } = await signIn(username, password);
+      const { error } = await signIn({ username, password });
+
       if (error) {
-        throw new Error(error.message);
+        toast.show('Failed to sign in. Please try again.', { type: 'danger' });
+        return;
       }
-    } catch (error) {
-      Loggers.error(error);
-    }
-  }, []);
+
+      toast.show('Signed in successfully.', { type: 'success' });
+    },
+    [toast],
+  );
 
   const handleGoToSignUp = useCallback(() => {
     navigate('SignUp');

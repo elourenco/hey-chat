@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UsersController } from "./users.controller";
+import { requireAuth } from "../../shared/middleware/auth.middleware";
 
 export const usersRoutes = Router();
 
@@ -13,20 +14,20 @@ export const usersRoutes = Router();
  *         id:
  *           type: string
  *           example: 64c1f7b8a7b9c2d3e4f56789
- *         name:
+ *         fullname:
  *           type: string
  *           example: Ada Lovelace
- *         email:
+ *         username:
  *           type: string
  *           example: ada@hey.chat
  *     CreateUserPayload:
  *       type: object
- *       required: [name, email, password]
+ *       required: [fullname, username, password]
  *       properties:
- *         name:
+ *         fullname:
  *           type: string
  *           example: Ada Lovelace
- *         email:
+ *         username:
  *           type: string
  *           example: ada@hey.chat
  *         password:
@@ -76,4 +77,4 @@ usersRoutes.post("/", UsersController.create);
  *             schema:
  *               $ref: "#/components/schemas/User"
  */
-usersRoutes.get("/:id", UsersController.getById);
+usersRoutes.get("/:id", requireAuth, UsersController.getById);
