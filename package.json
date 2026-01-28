@@ -10,7 +10,8 @@
 		"test": "jest",
 		"lint": "npx @biomejs/biome check",
 		"lint:fix": "npx @biomejs/biome check --write --unsafe",
-		"ts:check": "tsc --noEmit --pretty"
+		"ts:check": "tsc --noEmit --pretty",
+		"deploy:android:dev": "bundle exec fastlane android dev_apk"
 	},
 	"dependencies": {
 		"@notifee/react-native": "^9.1.8",

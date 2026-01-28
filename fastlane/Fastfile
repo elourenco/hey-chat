@@ -1,0 +1,19 @@
+require "shellwords"
+
+default_platform(:android)
+
+platform :android do
+  desc "Build debug APK and copy to dist/android (DEV)"
+  lane :dev_apk do
+    gradle(task: "assembleDebug", project_dir: "android")
+
+    root_dir = File.expand_path("..", __dir__)
+    apk_path = File.expand_path("android/app/build/outputs/apk/debug/app-debug.apk", root_dir)
+    dist_dir = File.expand_path("dist/android", root_dir)
+    sh("mkdir -p #{Shellwords.shellescape(dist_dir)}")
+
+    output_path = File.join(dist_dir, "hey-chat-dev.apk")
+    sh("cp -f #{Shellwords.shellescape(apk_path)} #{Shellwords.shellescape(output_path)}")
+    UI.success("APK copied to #{output_path}")
+  end
+end
