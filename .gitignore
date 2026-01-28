@@ -42,6 +42,8 @@ npm-debug.log
 yarn-error.log
 /backend/dist/
 /backend/node_modules/
+/backend/.env
+
 
 
 # fastlane
