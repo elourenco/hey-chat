@@ -1,7 +1,17 @@
 import { Router } from "express";
+import { z } from "zod";
 import { MessagesController } from "./messages.controller";
+import { validate } from "../../shared/middleware/validate.middleware";
 
 export const messagesRoutes = Router();
+const sendMessageSchema = z.object({
+	from: z.string().min(1),
+	to: z.string().min(1),
+	body: z.string().min(1),
+});
+const userIdParamsSchema = z.object({
+	userId: z.string().min(1),
+});
 
 /**
  * @openapi
@@ -60,7 +70,7 @@ export const messagesRoutes = Router();
  *             schema:
  *               $ref: "#/components/schemas/Message"
  */
-messagesRoutes.post("/", MessagesController.send);
+messagesRoutes.post("/", validate({ body: sendMessageSchema }), MessagesController.send);
 
 /**
  * @openapi
@@ -84,4 +94,8 @@ messagesRoutes.post("/", MessagesController.send);
  *               items:
  *                 $ref: "#/components/schemas/Message"
  */
-messagesRoutes.get("/user/:userId", MessagesController.list);
+messagesRoutes.get(
+	"/user/:userId",
+	validate({ params: userIdParamsSchema }),
+	MessagesController.list,
+);

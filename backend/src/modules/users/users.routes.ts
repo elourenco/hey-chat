@@ -1,8 +1,18 @@
 import { Router } from "express";
+import { z } from "zod";
 import { UsersController } from "./users.controller";
 import { requireAuth } from "../../shared/middleware/auth.middleware";
+import { validate } from "../../shared/middleware/validate.middleware";
 
 export const usersRoutes = Router();
+const createUserSchema = z.object({
+	fullname: z.string().min(1),
+	username: z.string().min(1),
+	password: z.string().min(1),
+});
+const userIdParamsSchema = z.object({
+	id: z.string().min(1),
+});
 
 /**
  * @openapi
@@ -86,7 +96,7 @@ usersRoutes.get("/", requireAuth, UsersController.list);
  *             schema:
  *               $ref: "#/components/schemas/User"
  */
-usersRoutes.post("/", UsersController.create);
+usersRoutes.post("/", validate({ body: createUserSchema }), UsersController.create);
 
 /**
  * @openapi
@@ -108,4 +118,9 @@ usersRoutes.post("/", UsersController.create);
  *             schema:
  *               $ref: "#/components/schemas/User"
  */
-usersRoutes.get("/:id", requireAuth, UsersController.getById);
+usersRoutes.get(
+	"/:id",
+	requireAuth,
+	validate({ params: userIdParamsSchema }),
+	UsersController.getById,
+);

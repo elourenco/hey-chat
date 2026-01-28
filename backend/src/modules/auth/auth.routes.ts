@@ -1,8 +1,19 @@
 import { Router } from "express";
+import { z } from "zod";
 import passport from "passport";
 import { AuthController } from "./auth.controller";
+import { validate } from "../../shared/middleware/validate.middleware";
 
 export const authRoutes = Router();
+const registerSchema = z.object({
+	fullname: z.string().min(1),
+	username: z.string().min(1),
+	password: z.string().min(1),
+});
+const loginSchema = z.object({
+	username: z.string().min(1),
+	password: z.string().min(1),
+});
 
 /**
  * @openapi
@@ -55,7 +66,7 @@ export const authRoutes = Router();
  *       201:
  *         description: User created
  */
-authRoutes.post("/register", AuthController.register);
+authRoutes.post("/register", validate({ body: registerSchema }), AuthController.register);
 
 /**
  * @openapi
@@ -79,6 +90,7 @@ authRoutes.post("/register", AuthController.register);
  */
 authRoutes.post(
 	"/login",
+	validate({ body: loginSchema }),
 	passport.authenticate("local", { session: false }),
 	AuthController.login,
 );
