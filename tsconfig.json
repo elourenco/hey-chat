@@ -1,6 +1,19 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
+    "baseUrl": ".",
+    "moduleSuffixes": ["", ".native", ".ios", ".android"],
+    "jsx": "react-native",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@features/*": ["src/features/*"],
+      "@entities/*": ["src/entities/*"],
+      "@utils/*": ["src/utils/*"],
+    },
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
     "types": ["jest"],
   },
   "include": ["**/*.ts", "**/*.tsx"],
