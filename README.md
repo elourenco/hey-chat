@@ -19,9 +19,12 @@ Aplicação mobile de chat em tempo real com cadastro, login, presença online/o
 
 ## Instalação
 
-### 1) Dependências do app (frontend)
+### 1) Dependências do app (mobile)
 ```bash
 yarn install
+
+# iOS (somente macOS)
+yarn pods
 ```
 
 ### 2) Dependências do backend
@@ -32,7 +35,7 @@ yarn install
 
 ## Configuração
 
-### Frontend (`.env` na raiz)
+### mobile (`.env` na raiz)
 Arquivo usado pelo `react-native-config`.
 ```env
 baseUrl=http://localhost:3000
@@ -78,20 +81,19 @@ cd backend
 yarn dev
 ```
 
-### Frontend
+## Frontend
 Em outro terminal, na raiz do projeto:
-```bash
-yarn start
-```
 
-Depois, execute a plataforma desejada:
+### Execução local do app (scripts do package.json)
+Use os scripts já existentes no `package.json`:
 ```bash
+# Inicie o Metro
+yarn start
+
 # Android
 yarn android
 
 # iOS (somente macOS)
-bundle install
-cd ios && bundle exec pod install && cd ..
 yarn ios
 ```
 
@@ -125,8 +127,3 @@ yarn docker:down
 - `docker/` → Dockerfile e Compose
 
 ---
-
-Se algo falhar, valide:
-- Variáveis de ambiente
-- Conexão com o MongoDB
-- Portas e base URL do app
