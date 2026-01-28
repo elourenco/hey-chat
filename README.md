@@ -4,6 +4,8 @@
 
 Aplicação mobile de chat em tempo real com cadastro, login, presença online/offline e notificações. O backend expõe APIs REST e eventos via WebSocket, com persistência em MongoDB.
 
+![Unit Tests](resouces/UnitTests.png)
+
 ## Stack
 - **Frontend:** React Native (CLI, sem Expo)
 - **Backend:** Node.js + Express + Passport + Socket.IO
@@ -122,6 +124,10 @@ yarn docker:down
 - **Lint (fix):** `yarn lint:fix`
 - **Type check:** `yarn ts:check`
 - **Tests:** `yarn test`
+
+## Testes
+- O backend possui testes unitários em `backend/src/**/__tests__` usando Jest + ts-jest.
+- Para executar: `cd backend && yarn test`.
 
 ## Estrutura do projeto
 - `src/` → App React Native
