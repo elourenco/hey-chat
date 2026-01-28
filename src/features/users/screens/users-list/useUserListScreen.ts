@@ -1,10 +1,8 @@
-import type { IBottomTabNavigator } from '@app/navigation/MainBottomTabNavigator';
 import { useAppSelector } from '@app/redux/store';
 import { loadUserList } from '@features/users/core/loadUserList';
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/core';
 import { Loggers } from '@utils/loggers';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useToast } from 'react-native-toast-notifications';
 
 const FALLBACK_ERROR_MESSAGE = 'Falha ao carregar usuarios. Tente novamente.';
@@ -12,6 +10,7 @@ const FALLBACK_ERROR_MESSAGE = 'Falha ao carregar usuarios. Tente novamente.';
 export const useUserListScreen = () => {
   const toast = useToast();
   const navigation = useNavigation();
+  const currentUserId = useAppSelector((state) => state.authReducer.userId);
   const users = useAppSelector((state) => state.usersReducer);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -57,8 +56,15 @@ export const useUserListScreen = () => {
     [navigation],
   );
 
+  const visibleUsers = useMemo(() => {
+    if (!currentUserId) {
+      return users;
+    }
+    return users.filter((user) => user.id !== currentUserId);
+  }, [currentUserId, users]);
+
   return {
-    users,
+    users: visibleUsers,
     isLoading,
     isRefreshing,
     onRefresh,
