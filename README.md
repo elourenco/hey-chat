@@ -1,7 +1,8 @@
 # Hey Chat
 
 [Download APK (DEV)](dist/android/hey-chat-dev.apk.zip) - modo DEV (debug).
-[Checklist de Requisitos](REQUIREMENTS.md)
+
+#### [Checklist de Requisitos](REQUIREMENTS.md)
 
 Aplicação mobile de chat em tempo real com cadastro, login, presença online/offline e notificações. O backend expõe APIs REST e eventos via WebSocket, com persistência em MongoDB.
 
