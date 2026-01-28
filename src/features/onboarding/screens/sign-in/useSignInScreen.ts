@@ -26,8 +26,6 @@ export const useSignInScreen = () => {
         toast.show('Failed to sign in. Please try again.', { type: 'danger' });
         return;
       }
-
-      toast.show('Signed in successfully.', { type: 'success' });
     },
     [toast],
   );

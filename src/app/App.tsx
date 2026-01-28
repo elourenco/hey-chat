@@ -4,9 +4,12 @@ import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-c
 import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-redux';
 import RootNavigator from './navigation/RootNavigator';
+import { useLocalNotifications } from './notifications/useLocalNotifications';
 import { store } from './redux/store';
 
 const App = () => {
+  useLocalNotifications();
+
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary>

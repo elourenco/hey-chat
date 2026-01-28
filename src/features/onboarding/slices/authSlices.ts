@@ -3,6 +3,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IAuth = {
   token: undefined,
+  userId: undefined,
   isAuthenticated: false,
 };
 

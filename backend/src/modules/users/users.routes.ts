@@ -38,6 +38,37 @@ export const usersRoutes = Router();
 /**
  * @openapi
  * /users:
+ *   get:
+ *     summary: List users with presence status
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Users list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: 64c1f7b8a7b9c2d3e4f56789
+ *                   fullname:
+ *                     type: string
+ *                     example: Ada Lovelace
+ *                   username:
+ *                     type: string
+ *                     example: ada@hey.chat
+ *                   online:
+ *                     type: boolean
+ *                     example: true
+ */
+usersRoutes.get("/", requireAuth, UsersController.list);
+
+/**
+ * @openapi
+ * /users:
  *   post:
  *     summary: Create user
  *     tags: [Users]

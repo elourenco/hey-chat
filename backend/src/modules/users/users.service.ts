@@ -25,6 +25,12 @@ export const UsersService = {
 			select: userSelect,
 		});
 	},
+	list: async () => {
+		return prisma.user.findMany({
+			select: userSelect,
+			orderBy: { fullname: "asc" },
+		});
+	},
 	findById: async (id: string) => {
 		return prisma.user.findUnique({ where: { id }, select: userSelect });
 	},

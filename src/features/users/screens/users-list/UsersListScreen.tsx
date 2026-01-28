@@ -1,10 +1,22 @@
 import Screen from '@components/screen/Screen';
-import { Text } from 'react-native';
+import VStack from '@components/v-stack/VStack';
+import UsersList from '../../components/users-list/UsersList';
+import { useUserListScreen } from './useUserListScreen';
 
 const UsersListScreen = () => {
+  const { users, isLoading, isRefreshing, onRefresh, handleOpenChat } = useUserListScreen();
+
   return (
     <Screen>
-      <Text>Users List</Text>
+      <VStack full>
+        <UsersList
+          data={users}
+          isLoading={isLoading}
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}
+          onPressUser={handleOpenChat}
+        />
+      </VStack>
     </Screen>
   );
 };

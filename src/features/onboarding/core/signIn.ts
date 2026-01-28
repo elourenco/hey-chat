@@ -1,10 +1,12 @@
 import { store } from '@app/redux/store';
 import type { IResult } from 'src/types/function';
+import { decodeJwtPayload } from '@utils/jwt';
 import { signInApi } from '../apis/signInApi';
-import { setAuth } from '../screens/slices/authSlices';
+import { setAuth } from '../slices/authSlices';
 
 interface SignInResult {
   token: string;
+  userId?: string;
 }
 
 interface SignInPayload {
@@ -15,10 +17,13 @@ interface SignInPayload {
 export const signIn = async (payload: SignInPayload): Promise<IResult<SignInResult>> => {
   try {
     const response = await signInApi(payload);
-    store.dispatch(setAuth({ token: response.data.token, isAuthenticated: true }));
+    const token = response.data.token;
+    const userId = decodeJwtPayload(token)?.sub;
+    store.dispatch(setAuth({ token, userId, isAuthenticated: true }));
     return {
       data: {
-        token: response.data.token,
+        token,
+        userId,
       },
     };
   } catch (error) {

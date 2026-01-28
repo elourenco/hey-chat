@@ -1,4 +1,7 @@
-import { authReducer } from '@features/onboarding/screens/slices/authSlices';
+import { chatUiReducer } from '@features/chat/slices/chatUiSlice';
+import { messagesReducer } from '@features/chat/slices/messagesSlices';
+import { authReducer } from '@features/onboarding/slices/authSlices';
+import { usersReducer } from '@features/users/slices/usersSlices';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import type { TypedUseSelectorHook } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +25,9 @@ const persistConfig = {
 // Add more reducers here
 const rootReducer = combineReducers({
   authReducer,
+  usersReducer,
+  messagesReducer,
+  chatUiReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -36,7 +42,7 @@ export const store = configureStore({
     }),
 });
 
-type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export type AppDispatch = typeof store.dispatch;
