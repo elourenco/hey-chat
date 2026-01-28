@@ -1,97 +1,132 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Hey Chat
 
-# Getting Started
+Aplicação mobile de chat em tempo real com cadastro, login, presença online/offline e notificações. O backend expõe APIs REST e eventos via WebSocket, com persistência em MongoDB.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Stack
+- **Frontend:** React Native (CLI, sem Expo)
+- **Backend:** Node.js + Express + Passport + Socket.IO
+- **Banco:** MongoDB (Atlas) via Prisma
+- **Docker:** Dockerfile e Docker Compose (backend)
 
-## Step 1: Start Metro
+## Pré-requisitos
+- **Node.js 20+**
+- **Yarn** (recomendado, há `yarn.lock`)
+- **Android Studio + JDK** (Android)
+- **Xcode + CocoaPods** (iOS)
+- **MongoDB** (Atlas)
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+> Dica: siga o guia oficial de ambiente do React Native antes de rodar o app.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Instalação
 
-```sh
-# Using npm
-npm start
+### 1) Dependências do app (frontend)
+```bash
+yarn install
+```
 
-# OR using Yarn
+### 2) Dependências do backend
+```bash
+cd backend
+yarn install
+```
+
+## Configuração
+
+### Frontend (`.env` na raiz)
+Arquivo usado pelo `react-native-config`.
+```env
+baseUrl=http://localhost:3000
+versionApp=1.0.0
+```
+
+> **Android emulador:** use `http://10.0.2.2:3000` no `baseUrl`.
+
+### Backend (`backend/.env`)
+```env
+NODE_ENV=development
+PORT=3000
+DATABASE_URL=mongodb://USER:PASS@HOST:PORT/DBNAME
+JWT_SECRET=troque-este-segredo
+```
+
+> **Boas práticas:** não versionar segredos reais. Use valores próprios em ambientes locais/CI.
+
+## Banco de Dados (Prisma + MongoDB)
+Na primeira vez, gere o client e aplique o schema:
+```bash
+cd backend
+yarn db:generate
+yarn db:migration
+```
+
+## Execução do backend
+
+### Opção prática (Docker + Mongo online)
+Se você já tem **Docker instalado** e um **MongoDB online** (Atlas ou outro), a forma mais simples é subir o backend via Compose.  
+Execute **dentro da pasta `backend`**:
+```bash
+cd backend
+yarn docker:up
+```
+
+> Essa opção é a mais prática para rodar rapidamente o Node.js já com build e start configurados.
+
+### Opção local (sem Docker)
+Se preferir rodar localmente (ou não tiver Docker), siga os passos abaixo:
+```bash
+cd backend
+yarn dev
+```
+
+### Frontend
+Em outro terminal, na raiz do projeto:
+```bash
 yarn start
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
+Depois, execute a plataforma desejada:
+```bash
+# Android
 yarn android
-```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
+# iOS (somente macOS)
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
+cd ios && bundle exec pod install && cd ..
 yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Docker (backend)
+O Docker está configurado para **subir apenas o backend**.  
+Você precisa apontar o `DATABASE_URL` para um MongoDB acessível (Atlas ou container externo).
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Subir
+```bash
+cd backend
+yarn docker:up
+```
 
-## Step 3: Modify your app
+### Parar
+```bash
+cd backend
+yarn docker:down
+```
 
-Now that you have successfully run the app, let's make changes!
+> Se for usar MongoDB local com Docker, suba um container separado e ajuste o `DATABASE_URL` para ele.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## Scripts úteis
+- **Lint:** `yarn lint`
+- **Lint (fix):** `yarn lint:fix`
+- **Type check:** `yarn ts:check`
+- **Tests:** `yarn test`
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## Estrutura do projeto
+- `src/` → App React Native
+- `backend/` → API, WebSockets e persistência
+- `docker/` → Dockerfile e Compose
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+---
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Se algo falhar, valide:
+- Variáveis de ambiente
+- Conexão com o MongoDB
+- Portas e base URL do app
